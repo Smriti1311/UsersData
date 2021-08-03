@@ -1,0 +1,77 @@
+import React, { useEffect, useState } from 'react';
+import SearchUser from './SearchUser';
+
+const DisplayUsers = (props) => {
+    
+    console.log(props.displayUserData);
+    const[displayUserData,setDisplayUserData] = useState({});
+
+    useEffect(()=>{
+        setDisplayUserData(props.displayUserData);
+    },[props])
+
+   const searchUserHandler = (user) => {
+   /*     console.log(user);
+       const displayUser = displayUserData.filter((userData)=>(
+            userData.firstName===user.firstName
+        ))
+      //  setDisplayUserData(displayUser);
+        */
+    }
+
+
+    let displayData = '';
+    console.log('after usesate=',displayUserData);
+    if (displayUserData) {
+        displayData = <table className='table table-striped table-bordered table-hover'>
+            <thead>
+                <tr>
+                    <th scope='col'>
+                        Id
+                    </th>
+                    <th scope='col'>
+                        First Name
+                    </th>
+                    <th scope='col'>
+                        Last Name
+                    </th>
+                    <th scope='col'>
+                        Phone Number
+                    </th>
+                    <th scope='col'>
+                        Email Address
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {displayUserData.map((user => (
+                    <tr key={user.userId}>
+                        <th scope='row'>
+                            {user.userId}
+                        </th>
+                        <td className='text-capitalize'>
+                            {user.firstName}
+                        </td>
+                        <td className='text-capitalize'>
+                            {user.lastName}
+                        </td>
+                        <td>
+                            {user.phoneNumber}
+                        </td>
+                        <td>
+                            {user.emailAddress}
+                        </td>
+                    </tr>
+                )))}
+            </tbody>
+        </table>
+    }
+    return (
+        <div>
+            <SearchUser searchUser={searchUserHandler} />
+            {displayData}
+        </div>
+    )
+}
+
+export default DisplayUsers;
