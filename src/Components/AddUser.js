@@ -21,9 +21,8 @@ class AddUser extends Component {
             <div  className='float-right mb-3'>
             <Button onClick = {this.showModalHandler}>Add User</Button>
             <Modal show={this.state.showModal} onHide={this.hideModalHandler}>
-                <Modal.Header closeButton>Add User Data</Modal.Header>
-                <Modal.Body><AddUserData hideModal = {this.hideModalHandler} 
-                                shouldUserDataUpdateHandler={this.props.shouldUserDataUpdateHandler}/></Modal.Body>
+                <Modal.Header closeButton   className = 'bg-primary font-weight-bold text-white'>Add User Data</Modal.Header>
+                <Modal.Body><AddUserData newUserAdded = {this.props.newUserAdded} hideModal = {this.hideModalHandler} /></Modal.Body>
             </Modal>
             </div>
 

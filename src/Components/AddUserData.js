@@ -9,7 +9,8 @@ class AddUserData extends Component {
         firstName: '',
         lastName: '',
         email: '',
-        phoneNumber: ''
+        phoneNumber: '',
+        validationResult: ''
     }
 
     constraints = {
@@ -37,16 +38,15 @@ class AddUserData extends Component {
     setValueHandler = (event) => {
         let key = event.target.name;
         let value = event.target.value;
-        let result = this.validateItem(key, value);
-        console.log(result);
-        this.setState({ [key]: value });
+        let validationResult = this.validateItem(key, value);
+        this.setState({ [key]: value, validationResult: validationResult });
     }
 
     validateItem = (key, value) => {
         let validateObj = {};
         validateObj[key] = value;
         let constraint = this.constraints[key]
-        return validate(validateObj,{[key] :constraint});
+        return validate(validateObj, { [key]: constraint });
 
     }
 
@@ -61,33 +61,37 @@ class AddUserData extends Component {
         console.log(userData);
         axios.post('https://react-fceb0-default-rtdb.firebaseio.com/users.json', userData)
             .then(res => {
-                console.log(res)
+                console.log(res);
+                this.props.hideModal();
+                this.props.newUserAdded();
             })
-        this.props.hideModal();
-        this.props.shouldUserDataUpdateHandler();
     }
 
     render() {
-        const { firstName, lastName, email, phoneNumber } = this.state;
+        const { firstName, lastName, email, phoneNumber, validationResult } = this.state;
         return (
-            <Form onSubmit={this.submitDataHandler}>
+            <Form onSubmit={this.submitDataHandler} className='m-3'>
                 <FormGroup as={Row} className="mb-3">
                     <FormLabel>First Name</FormLabel>
                     <FormControl name='firstName' type='input' value={firstName} onChange={this.setValueHandler} />
+                    {validationResult?.firstName && <small className='form-text text-danger'>{validationResult.firstName}</small>}
                 </FormGroup>
                 <FormGroup as={Row} className="mb-3">
                     <FormLabel>Last Name</FormLabel>
                     <FormControl name='lastName' type='input' value={lastName} onChange={this.setValueHandler} />
+                    {validationResult?.lastName && <small className='form-text text-danger'>{validationResult.lastName}</small>}
                 </FormGroup>
                 <FormGroup as={Row} className="mb-3">
                     <FormLabel>Email</FormLabel>
                     <FormControl name='email' type='input' value={email} onChange={this.setValueHandler} />
+                    {validationResult?.email && <small className='form-text text-danger'>{validationResult.email}</small>}
                 </FormGroup>
                 <FormGroup as={Row} className="mb-3">
                     <FormLabel>Phone Number</FormLabel>
                     <FormControl name='phoneNumber' type='input' value={phoneNumber} onChange={this.setValueHandler} />
+                    {validationResult?.phone && <small className='form-text text-danger'>{validationResult.phone}</small>}
                 </FormGroup>
-                <Button type='submit' disabled={!firstName || !lastName}>Submit</Button>
+                <Button type='submit' disabled={!firstName || !lastName || validationResult}>Submit</Button>
             </Form>
 
         )

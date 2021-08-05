@@ -2,35 +2,19 @@ import React, { Component } from 'react';
 
 class DisplayUsers extends Component {
     render() {
-        const { searchText, displayUserData } = this.props;
-
+        const { searchText, displayUserData, searchColumns } = this.props;
         const displayUsersData = displayUserData.map((user) => {
-            if (searchText) {
-                if (user.firstName.toLowerCase().indexOf(searchText) === -1
-                    && user.lastName.toLowerCase().indexOf(searchText) === -1
-                    && user.phoneNumber.indexOf(searchText) === -1
-                    && user.email.indexOf(searchText) === -1) {
-                    return null;
-                }
-                else {
-                    return (<tr key={user.userId}>
-                        <th scope='row'>
-                            {user.userId}
-                        </th>
-                        <td className='text-capitalize'>
-                            {user.firstName}
-                        </td>
-                        <td className='text-capitalize'>
-                            {user.lastName}
-                        </td>
-                        <td>
-                            {user.phoneNumber}
-                        </td>
-                        <td>
-                            {user.email}
-                        </td>
-                    </tr>);
-                }
+            if (searchText && searchColumns === 'firstName' && !user.firstName.toLowerCase().includes(searchText)){
+                return;
+            } 
+            else  if (searchText && searchColumns === 'lastName' && !user.lastName.toLowerCase().includes(searchText)){
+                return;
+            }
+            else  if (searchText && searchColumns === 'email' && !user.email.toLowerCase().includes(searchText)){
+                return;
+            }
+            else  if (searchText && searchColumns === 'phone' && !user.phoneNumber.includes(searchText)){
+                return;
             }
             else {
                 return (<tr key={user.userId}>
